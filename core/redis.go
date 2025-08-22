@@ -3,14 +3,14 @@ package core
 import (
 	"context"
 	"github.com/go-redis/redis/v9"
-	"likeadmin/config"
 	"log"
+	"mwhtpay/config"
 	"time"
 )
 
 var Redis = initRedis()
 
-//initRedis 初始化redis客户端
+// initRedis 初始化redis客户端
 func initRedis() *redis.Client {
 	opt, err := redis.ParseURL(config.Config.RedisUrl)
 	if err != nil {

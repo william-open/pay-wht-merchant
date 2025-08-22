@@ -2,11 +2,11 @@ package system
 
 import (
 	"gorm.io/gorm"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
-	"likeadmin/util"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/model/system"
+	"mwhtpay/util"
 	"strconv"
 	"strings"
 )

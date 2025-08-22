@@ -3,11 +3,11 @@ package plugin
 import (
 	"fmt"
 	"io"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/util"
 	"mime/multipart"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/util"
 	"os"
 	"path"
 	"strconv"
@@ -17,7 +17,7 @@ import (
 
 var StorageDriver = storageDriver{}
 
-//UploadFile 文件对象
+// UploadFile 文件对象
 type UploadFile struct {
 	Name string // 文件名称
 	Type int    // 文件类型
@@ -27,10 +27,10 @@ type UploadFile struct {
 	Path string // 访问地址
 }
 
-//storageDriver 存储引擎
+// storageDriver 存储引擎
 type storageDriver struct{}
 
-//Upload 根据引擎类型上传文件
+// Upload 根据引擎类型上传文件
 func (sd storageDriver) Upload(file *multipart.FileHeader, folder string, fileType int) (uf *UploadFile, e error) {
 	// TODO: engine默认local
 	if e = sd.checkFile(file, fileType); e != nil {
@@ -57,7 +57,7 @@ func (sd storageDriver) Upload(file *multipart.FileHeader, folder string, fileTy
 	}, nil
 }
 
-//localUpload 本地上传 (临时方法)
+// localUpload 本地上传 (临时方法)
 func (sd storageDriver) localUpload(file *multipart.FileHeader, key string, folder string) (e error) {
 	// TODO: 临时方法，后续调整
 	// 映射目录
@@ -97,7 +97,7 @@ func (sd storageDriver) localUpload(file *multipart.FileHeader, key string, fold
 	return nil
 }
 
-//checkFile 生成文件名称
+// checkFile 生成文件名称
 func (sd storageDriver) buildSaveName(file *multipart.FileHeader) string {
 	name := file.Filename
 	ext := strings.ToLower(path.Ext(name))
@@ -105,7 +105,7 @@ func (sd storageDriver) buildSaveName(file *multipart.FileHeader) string {
 	return path.Join(date, util.ToolsUtil.MakeUuid()+ext)
 }
 
-//checkFile 文件验证
+// checkFile 文件验证
 func (sd storageDriver) checkFile(file *multipart.FileHeader, fileType int) (e error) {
 	fileName := file.Filename
 	fileExt := strings.ToLower(strings.Replace(path.Ext(fileName), ".", "", 1))

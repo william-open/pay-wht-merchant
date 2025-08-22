@@ -2,14 +2,14 @@ package common
 
 import (
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/model/common"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/schemas/resp"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/request"
+	"mwhtpay/core/response"
+	"mwhtpay/model/common"
+	"mwhtpay/util"
 	"path"
 	"time"
 )

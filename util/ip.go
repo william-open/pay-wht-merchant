@@ -1,16 +1,16 @@
 package util
 
 import (
-	"likeadmin/core"
+	"mwhtpay/core"
 	"net"
 )
 
 var IpUtil = ipUtil{}
 
-//serverUtil IP工具类
+// serverUtil IP工具类
 type ipUtil struct{}
 
-//GetHostIp 获取本地主机名
+// GetHostIp 获取本地主机名
 func (su ipUtil) GetHostIp() (ip string) {
 	conn, err := net.Dial("udp", "114.114.114.114:80")
 	if err != nil {

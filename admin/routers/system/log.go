@@ -2,13 +2,13 @@ package system
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/system"
+	"mwhtpay/core"
+	"mwhtpay/core/request"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var LogGroup = core.Group("/system", newLogHandler, regLog, middleware.TokenAuth())
@@ -28,7 +28,7 @@ type logHandler struct {
 	srv system.ISystemLogsServer
 }
 
-//operate 操作日志
+// operate 操作日志
 func (lh logHandler) operate(c *gin.Context) {
 	var page request.PageReq
 	var logReq req.SystemLogOperateReq
@@ -42,7 +42,7 @@ func (lh logHandler) operate(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//login 登录日志
+// login 登录日志
 func (lh logHandler) login(c *gin.Context) {
 	var page request.PageReq
 	var logReq req.SystemLogLoginReq

@@ -2,13 +2,13 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/config"
-	"likeadmin/core/response"
-	"likeadmin/util"
+	"mwhtpay/config"
+	"mwhtpay/core/response"
+	"mwhtpay/util"
 	"strings"
 )
 
-//ShowMode 演示模式中间件，演示模式禁止POST
+// ShowMode 演示模式中间件，演示模式禁止POST
 func ShowMode() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 路由转权限

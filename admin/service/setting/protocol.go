@@ -2,10 +2,10 @@ package setting
 
 import (
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/util"
 )
 
 type ISettingProtocolService interface {

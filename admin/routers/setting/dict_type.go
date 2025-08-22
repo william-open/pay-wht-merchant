@@ -2,13 +2,13 @@ package setting
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/setting"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/setting"
+	"mwhtpay/core"
+	"mwhtpay/core/request"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var DictTypeGroup = core.Group("/setting", newDictTypeHandler, regDictType, middleware.TokenAuth())
@@ -32,13 +32,13 @@ type dictTypeHandler struct {
 	srv setting.ISettingDictTypeService
 }
 
-//all 字典类型所有
+// all 字典类型所有
 func (dth dictTypeHandler) all(c *gin.Context) {
 	res, err := dth.srv.All()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//list 字典类型列表
+// list 字典类型列表
 func (dth dictTypeHandler) list(c *gin.Context) {
 	var page request.PageReq
 	var listReq req.SettingDictTypeListReq
@@ -52,7 +52,7 @@ func (dth dictTypeHandler) list(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 字典类型详情
+// detail 字典类型详情
 func (dth dictTypeHandler) detail(c *gin.Context) {
 	var detailReq req.SettingDictTypeDetailReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
@@ -62,7 +62,7 @@ func (dth dictTypeHandler) detail(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//detail 字典类型新增
+// detail 字典类型新增
 func (dth dictTypeHandler) add(c *gin.Context) {
 	var addReq req.SettingDictTypeAddReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &addReq)) {
@@ -71,7 +71,7 @@ func (dth dictTypeHandler) add(c *gin.Context) {
 	response.CheckAndResp(c, dth.srv.Add(addReq))
 }
 
-//edit 字典类型编辑
+// edit 字典类型编辑
 func (dth dictTypeHandler) edit(c *gin.Context) {
 	var editReq req.SettingDictTypeEditReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &editReq)) {
@@ -80,7 +80,7 @@ func (dth dictTypeHandler) edit(c *gin.Context) {
 	response.CheckAndResp(c, dth.srv.Edit(editReq))
 }
 
-//del 字典类型删除
+// del 字典类型删除
 func (dth dictTypeHandler) del(c *gin.Context) {
 	var delReq req.SettingDictTypeDelReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &delReq)) {

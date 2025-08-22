@@ -3,14 +3,14 @@ package system
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/system"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/request"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var RoleGroup = core.Group("/system", newRoleHandler, regRole, middleware.TokenAuth())

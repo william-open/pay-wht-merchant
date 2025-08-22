@@ -1,10 +1,10 @@
 package service
 
 import (
-	"likeadmin/admin/service/biz"
-	"likeadmin/admin/service/common"
-	"likeadmin/admin/service/setting"
-	"likeadmin/admin/service/system"
+	"mwhtpay/admin/service/biz"
+	"mwhtpay/admin/service/common"
+	"mwhtpay/admin/service/setting"
+	"mwhtpay/admin/service/system"
 )
 
 var InitFunctions = []interface{}{

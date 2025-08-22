@@ -2,12 +2,12 @@ package system
 
 import (
 	"gorm.io/gorm"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/schemas/resp"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/schemas/resp"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/model/system"
+	"mwhtpay/util"
 )
 
 type ISystemAuthDeptService interface {

@@ -2,10 +2,10 @@ package monitor
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 	"strings"
 )
 
@@ -24,7 +24,7 @@ func regMonitor(rg *gin.RouterGroup, group *core.GroupBase) error {
 
 type monitorHandler struct{}
 
-//cache 缓存监控
+// cache 缓存监控
 func (mh monitorHandler) cache(c *gin.Context) {
 	cmdStatsMap := util.RedisUtil.Info("commandstats")
 	var stats []map[string]string
@@ -41,7 +41,7 @@ func (mh monitorHandler) cache(c *gin.Context) {
 	})
 }
 
-//server 服务监控
+// server 服务监控
 func (mh monitorHandler) server(c *gin.Context) {
 	response.OkWithData(c, map[string]interface{}{
 		"cpu":  util.ServerUtil.GetCpuInfo(),

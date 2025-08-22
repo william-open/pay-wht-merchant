@@ -2,13 +2,13 @@ package common
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/common"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/common"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var UploadGroup = core.Group("/common", newUploadHandler, regUpload, middleware.TokenAuth())
@@ -28,7 +28,7 @@ type uploadHandler struct {
 	srv common.IUploadService
 }
 
-//uploadImage 上传图片
+// uploadImage 上传图片
 func (uh uploadHandler) uploadImage(c *gin.Context) {
 	var uReq req.CommonUploadImageReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &uReq)) {
@@ -42,7 +42,7 @@ func (uh uploadHandler) uploadImage(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//uploadVideo 上传视频
+// uploadVideo 上传视频
 func (uh uploadHandler) uploadVideo(c *gin.Context) {
 	var uReq req.CommonUploadImageReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &uReq)) {

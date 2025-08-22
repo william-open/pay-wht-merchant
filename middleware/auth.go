@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/service/system"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	sysModel "likeadmin/model/system"
-	"likeadmin/util"
+	"mwhtpay/admin/service/system"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	sysModel "mwhtpay/model/system"
+	"mwhtpay/util"
 	"strconv"
 	"strings"
 )

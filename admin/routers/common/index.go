@@ -3,12 +3,12 @@ package common
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/service/common"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/service/common"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var IndexGroup = core.Group("/common", newIndexHandler, regIndex, middleware.TokenAuth())

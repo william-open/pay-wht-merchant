@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"likeadmin/config"
-	"likeadmin/core/response"
-	"likeadmin/model/gen"
-	"likeadmin/util"
+	"mwhtpay/config"
+	"mwhtpay/core/response"
+	"mwhtpay/model/gen"
+	"mwhtpay/util"
 	"os"
 	"path"
 	"strings"
@@ -29,23 +29,23 @@ var TemplateUtil = templateUtil{
 		}),
 }
 
-//sub 模板-减函数
+// sub 模板-减函数
 func sub(a, b int) int {
 	return a - b
 }
 
-//slice 模板-创建切片
+// slice 模板-创建切片
 func slice(items ...interface{}) []interface{} {
 	return items
 }
 
-//zFile 待加入zip的文件
+// zFile 待加入zip的文件
 type zFile struct {
 	Name string
 	Body string
 }
 
-//TplVars 模板变量
+// TplVars 模板变量
 type TplVars struct {
 	GenTpl          string
 	TableName       string
@@ -74,13 +74,13 @@ type TplVars struct {
 	//ModelTypeMap    map[string]string
 }
 
-//genUtil 模板工具
+// genUtil 模板工具
 type templateUtil struct {
 	basePath string
 	tpl      *template.Template
 }
 
-//PrepareVars 获取模板变量信息
+// PrepareVars 获取模板变量信息
 func (tu templateUtil) PrepareVars(table gen.GenTable, columns []gen.GenTableColumn,
 	oriSubPriCol gen.GenTableColumn, oriSubCols []gen.GenTableColumn) TplVars {
 	subPriField := "id"
@@ -159,7 +159,7 @@ func (tu templateUtil) PrepareVars(table gen.GenTable, columns []gen.GenTableCol
 	}
 }
 
-//GetTemplatePaths 获取模板路径
+// GetTemplatePaths 获取模板路径
 func (tu templateUtil) GetTemplatePaths(genTpl string) []string {
 	tplPaths := []string{
 		"gocode/model.go.tpl",
@@ -177,7 +177,7 @@ func (tu templateUtil) GetTemplatePaths(genTpl string) []string {
 	return tplPaths
 }
 
-//Render 渲染模板
+// Render 渲染模板
 func (tu templateUtil) Render(tplPath string, tplVars TplVars) (res string, e error) {
 	tpl, err := tu.tpl.ParseFiles(path.Join(config.Config.RootPath, tu.basePath, tplPath))
 	if e = response.CheckErr(err, "TemplateUtil.Render ParseFiles err"); e != nil {
@@ -191,7 +191,7 @@ func (tu templateUtil) Render(tplPath string, tplVars TplVars) (res string, e er
 	return buf.String(), nil
 }
 
-//GetGenPath 获取生成路径
+// GetGenPath 获取生成路径
 func (tu templateUtil) GetGenPath(table gen.GenTable) string {
 	if table.GenPath == "/" {
 		//return path.Join(config.Config.RootPath, config.GenConfig.GenRootPath)
@@ -200,7 +200,7 @@ func (tu templateUtil) GetGenPath(table gen.GenTable) string {
 	return table.GenPath
 }
 
-//GetFilePaths 获取生成文件相对路径
+// GetFilePaths 获取生成文件相对路径
 func (tu templateUtil) GetFilePaths(tplCodeMap map[string]string, moduleName string) map[string]string {
 	//模板文件对应的输出文件
 	fmtMap := map[string]string{
@@ -221,7 +221,7 @@ func (tu templateUtil) GetFilePaths(tplCodeMap map[string]string, moduleName str
 	return filePath
 }
 
-//GenCodeFiles 生成代码文件
+// GenCodeFiles 生成代码文件
 func (tu templateUtil) GenCodeFiles(tplCodeMap map[string]string, moduleName string, basePath string) error {
 	filePaths := tu.GetFilePaths(tplCodeMap, moduleName)
 	for file, tplCode := range filePaths {
@@ -257,7 +257,7 @@ func addFileToZip(zipWriter *zip.Writer, file zFile) error {
 	return nil
 }
 
-//GenZip 生成代码压缩包
+// GenZip 生成代码压缩包
 func (tu templateUtil) GenZip(zipWriter *zip.Writer, tplCodeMap map[string]string, moduleName string) error {
 	filePaths := tu.GetFilePaths(tplCodeMap, moduleName)
 	files := make([]zFile, 0)

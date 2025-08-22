@@ -1,4 +1,4 @@
-module likeadmin
+module mwhtpay
 
 go 1.18
 

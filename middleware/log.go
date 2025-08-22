@@ -5,17 +5,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"go.uber.org/zap"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/model/system"
-	"likeadmin/util"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/model/system"
+	"mwhtpay/util"
 	"net/url"
 	"strings"
 	"time"
 )
 
-//requestType 请求参数类
+// requestType 请求参数类
 type requestType string
 
 const (
@@ -23,7 +23,7 @@ const (
 	RequestDefault requestType = "default" // 默认数据类型
 )
 
-//RecordLog 记录系统日志信息中间件
+// RecordLog 记录系统日志信息中间件
 func RecordLog(title string, reqTypes ...requestType) gin.HandlerFunc {
 	reqType := RequestDefault
 	if len(reqTypes) > 0 {

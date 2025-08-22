@@ -2,11 +2,11 @@ package common
 
 import (
 	"gorm.io/gorm"
-	"likeadmin/config"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/model/biz"
-	"likeadmin/util"
+	"mwhtpay/config"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/model/biz"
+	"mwhtpay/util"
 	"time"
 )
 
@@ -32,7 +32,7 @@ type indexService struct {
 // Console 控制台数据
 func (iSrv indexService) Console(mId uint) (res map[string]interface{}, e error) {
 	// 版本信息
-	name, err := util.ConfigUtil.GetVal(iSrv.db, "website", "name", "LikeAdmin-Go")
+	name, err := util.ConfigUtil.GetVal(iSrv.db, "website", "name", "mwhtpay-Go")
 	if e = response.CheckErr(err, "Console Get err"); e != nil {
 		return
 	}
@@ -58,11 +58,11 @@ func (iSrv indexService) Console(mId uint) (res map[string]interface{}, e error)
 	version := map[string]interface{}{
 		"name":    name,
 		"version": config.Config.Version,
-		"website": "www.likeadmin.cn",
+		"website": "www.mwhtpay.cn",
 		"based":   "Vue3.x、ElementUI、MySQL",
 		"channel": map[string]string{
-			"gitee":   "https://gitee.com/likeadmin/likeadmin_python",
-			"website": "https://www.likeadmin.cn",
+			"gitee":   "https://gitee.com/mwhtpay/mwhtpay_python",
+			"website": "https://www.mwhtpay.cn",
 		},
 	}
 	// 今日数据

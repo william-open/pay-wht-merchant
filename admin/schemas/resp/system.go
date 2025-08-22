@@ -1,19 +1,19 @@
 package resp
 
-import "likeadmin/core"
+import "mwhtpay/core"
 
-//SystemLoginResp 系统登录返回信息
+// SystemLoginResp 系统登录返回信息
 type SystemLoginResp struct {
 	Token string `json:"token"`
 }
 
-//SystemConfigResp 系统配置返回信息
+// SystemConfigResp 系统配置返回信息
 type SystemConfigResp struct {
 	Name  string `json:"name" structs:"name"`   // 键
 	Value string `json:"value" structs:"value"` // 值
 }
 
-//SystemAuthAdminResp 管理员返回信息
+// SystemAuthAdminResp 管理员返回信息
 type SystemAuthAdminResp struct {
 	ID            uint        `json:"id" structs:"id"`                       // 主键
 	Username      string      `json:"username" structs:"username"`           // 账号
@@ -31,7 +31,7 @@ type SystemAuthAdminResp struct {
 	UpdateTime    core.TsTime `json:"updateTime" structs:"updateTime"`       // 更新时间
 }
 
-//SystemAuthAdminSelfOneResp 当前管理员返回部分信息
+// SystemAuthAdminSelfOneResp 当前管理员返回部分信息
 type SystemAuthAdminSelfOneResp struct {
 	ID            uint        `json:"id" structs:"id"`                       // 主键
 	Username      string      `json:"username" structs:"username"`           // 账号
@@ -47,13 +47,13 @@ type SystemAuthAdminSelfOneResp struct {
 	UpdateTime    core.TsTime `json:"updateTime" structs:"updateTime"`       // 更新时间
 }
 
-//SystemAuthAdminSelfResp 当前系统管理员返回信息
+// SystemAuthAdminSelfResp 当前系统管理员返回信息
 type SystemAuthAdminSelfResp struct {
 	User        SystemAuthAdminSelfOneResp `json:"user" structs:"user"`               // 用户信息
 	Permissions []string                   `json:"permissions" structs:"permissions"` // 权限集合: [[*]=>所有权限, ['article:add']=>部分权限]
 }
 
-//SystemAuthRoleSimpleResp 系统角色返回简单信息
+// SystemAuthRoleSimpleResp 系统角色返回简单信息
 type SystemAuthRoleSimpleResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	Name       string      `json:"name" structs:"name"`             // 角色名称
@@ -61,7 +61,7 @@ type SystemAuthRoleSimpleResp struct {
 	UpdateTime core.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
 }
 
-//SystemAuthRoleResp 系统角色返回信息
+// SystemAuthRoleResp 系统角色返回信息
 type SystemAuthRoleResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	Name       string      `json:"name" structs:"name"`             // 角色名称
@@ -74,7 +74,7 @@ type SystemAuthRoleResp struct {
 	UpdateTime core.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
 }
 
-//SystemAuthMenuResp 系统菜单返回信息
+// SystemAuthMenuResp 系统菜单返回信息
 type SystemAuthMenuResp struct {
 	ID         uint                 `json:"id" structs:"id"`                       // 主键
 	Pid        uint                 `json:"pid" structs:"pid"`                     // 上级菜单
@@ -95,7 +95,7 @@ type SystemAuthMenuResp struct {
 	Children   []SystemAuthMenuResp `json:"children,omitempty" structs:"children"` // 子集
 }
 
-//SystemAuthDeptResp 系统部门返回信息
+// SystemAuthDeptResp 系统部门返回信息
 type SystemAuthDeptResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	Pid        uint        `json:"pid" structs:"pid"`               // 部门父级
@@ -108,7 +108,7 @@ type SystemAuthDeptResp struct {
 	UpdateTime core.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
 }
 
-//SystemAuthPostResp 系统岗位返回信息
+// SystemAuthPostResp 系统岗位返回信息
 type SystemAuthPostResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	Code       string      `json:"code" structs:"code"`             // 岗位编号
@@ -120,7 +120,7 @@ type SystemAuthPostResp struct {
 	UpdateTime core.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
 }
 
-//SystemLogOperateResp 操作日志返回信息
+// SystemLogOperateResp 操作日志返回信息
 type SystemLogOperateResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	Username   string      `json:"username" structs:"username"`     // 用户账号
@@ -139,7 +139,7 @@ type SystemLogOperateResp struct {
 	CreateTime core.TsTime `json:"createTime" structs:"createTime"` // 创建时间
 }
 
-//SystemLogLoginResp 登录日志返回信息
+// SystemLogLoginResp 登录日志返回信息
 type SystemLogLoginResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	Username   string      `json:"username" structs:"username"`     // 登录账号

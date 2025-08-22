@@ -3,7 +3,7 @@ package util
 import (
 	"errors"
 	"gorm.io/gorm"
-	"likeadmin/model/system"
+	"mwhtpay/model/system"
 )
 
 var ConfigUtil = configUtil{}

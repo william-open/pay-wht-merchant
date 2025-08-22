@@ -1,7 +1,7 @@
 package biz
 
 import (
-	"likeadmin/util"
+	"mwhtpay/util"
 )
 
 // CollectionAddress 归集账户实体

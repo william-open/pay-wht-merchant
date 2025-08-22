@@ -71,8 +71,8 @@ func loadConfig(envPath string) envConfig {
 		RedisUrl:      "redis://localhost:6379",
 		RedisPoolSize: 100,
 		// 数据源配置
-		DatabaseUrl:            "root:root@tcp(localhost:3306)/likeadmin?charset=utf8mb4&parseTime=True&loc=Local",
-		OrderDatabaseUrl:       "root:root@tcp(localhost:3306)/likeadmin?charset=utf8mb4&parseTime=True&loc=Local",
+		DatabaseUrl:            "root:root@tcp(localhost:3306)/mwhtpay?charset=utf8mb4&parseTime=True&loc=Local",
+		OrderDatabaseUrl:       "root:root@tcp(localhost:3306)/mwhtpay?charset=utf8mb4&parseTime=True&loc=Local",
 		DbTablePrefix:          "w_",
 		DbDefaultStringSize:    256,
 		DbMaxIdleConns:         10,

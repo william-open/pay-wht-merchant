@@ -2,12 +2,12 @@ package system
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/system"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/system"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var LoginGroup = core.Group("/system", newLoginHandler, regLogin, middleware.TokenAuth())
@@ -27,7 +27,7 @@ type loginHandler struct {
 	srv system.ISystemLoginService
 }
 
-//login 登录系统
+// login 登录系统
 func (lh loginHandler) login(c *gin.Context) {
 	var loginReq req.SystemLoginReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &loginReq)) {
@@ -37,7 +37,7 @@ func (lh loginHandler) login(c *gin.Context) {
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//logout 登录退出
+// logout 登录退出
 func (lh loginHandler) logout(c *gin.Context) {
 	var logoutReq req.SystemLogoutReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyHeader(c, &logoutReq)) {

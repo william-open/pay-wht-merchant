@@ -1,12 +1,12 @@
 package routers
 
 import (
-	"likeadmin/admin/routers/biz"
-	"likeadmin/admin/routers/common"
-	"likeadmin/admin/routers/monitor"
-	"likeadmin/admin/routers/setting"
-	"likeadmin/admin/routers/system"
-	"likeadmin/core"
+	"mwhtpay/admin/routers/biz"
+	"mwhtpay/admin/routers/common"
+	"mwhtpay/admin/routers/monitor"
+	"mwhtpay/admin/routers/setting"
+	"mwhtpay/admin/routers/system"
+	"mwhtpay/core"
 )
 
 var InitRouters = []*core.GroupBase{

@@ -5,13 +5,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"io/ioutil"
-	"likeadmin/core/response"
 	"mime/multipart"
+	"mwhtpay/core/response"
 )
 
 var VerifyUtil = verifyUtil{}
 
-//verifyUtil 参数验证工具类
+// verifyUtil 参数验证工具类
 type verifyUtil struct{}
 
 func (vu verifyUtil) VerifyJSON(c *gin.Context, obj any) (e error) {

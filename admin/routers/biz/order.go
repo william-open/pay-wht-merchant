@@ -2,13 +2,13 @@ package biz
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/biz"
-	"likeadmin/core"
-	"likeadmin/core/request"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/biz"
+	"mwhtpay/core"
+	"mwhtpay/core/request"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var OrderGroup = core.Group("/biz/order", newOrderHandler, regOrder, middleware.TokenAuth())

@@ -1,6 +1,6 @@
 package biz
 
-import "likeadmin/util"
+import "mwhtpay/util"
 
 // Currency 货币实体
 type Currency struct {

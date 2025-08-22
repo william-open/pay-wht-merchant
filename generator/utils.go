@@ -2,9 +2,9 @@ package generator
 
 import (
 	"gorm.io/gorm"
-	"likeadmin/config"
-	"likeadmin/model/gen"
-	"likeadmin/util"
+	"mwhtpay/config"
+	"mwhtpay/model/gen"
+	"mwhtpay/util"
 	"strconv"
 	"strings"
 	"time"
@@ -12,10 +12,10 @@ import (
 
 var GenUtil = genUtil{}
 
-//genUtil 代码生成工具
+// genUtil 代码生成工具
 type genUtil struct{}
 
-//GetDbTablesQuery 查询库中的数据表
+// GetDbTablesQuery 查询库中的数据表
 func (gu genUtil) GetDbTablesQuery(db *gorm.DB, tableName string, tableComment string) *gorm.DB {
 	whereStr := ""
 	if tableName != "" {
@@ -33,7 +33,7 @@ func (gu genUtil) GetDbTablesQuery(db *gorm.DB, tableName string, tableComment s
 	return query
 }
 
-//GetDbTablesQueryByNames 根据表名集查询表
+// GetDbTablesQueryByNames 根据表名集查询表
 func (gu genUtil) GetDbTablesQueryByNames(db *gorm.DB, tableNames []string) *gorm.DB {
 	query := db.Table("information_schema.tables").Where(
 		`table_schema = (SELECT database()) 
@@ -44,7 +44,7 @@ func (gu genUtil) GetDbTablesQueryByNames(db *gorm.DB, tableNames []string) *gor
 	return query
 }
 
-//GetDbTableColumnsQueryByName 根据表名查询列信息
+// GetDbTableColumnsQueryByName 根据表名查询列信息
 func (gu genUtil) GetDbTableColumnsQueryByName(db *gorm.DB, tableName string) *gorm.DB {
 	query := db.Table("information_schema.columns").Where(
 		`table_schema = (SELECT database()) 
@@ -57,7 +57,7 @@ func (gu genUtil) GetDbTableColumnsQueryByName(db *gorm.DB, tableName string) *g
 	return query
 }
 
-//InitTable 初始化表
+// InitTable 初始化表
 func (gu genUtil) InitTable(table gen.GenTable) gen.GenTable {
 	return gen.GenTable{
 		TableName:    table.TableName,
@@ -71,7 +71,7 @@ func (gu genUtil) InitTable(table gen.GenTable) gen.GenTable {
 	}
 }
 
-//InitColumn 初始化字段列
+// InitColumn 初始化字段列
 func (gu genUtil) InitColumn(tableId uint, column gen.GenTableColumn) gen.GenTableColumn {
 	columnType := gu.GetDbType(column.ColumnType)
 	columnLen := gu.GetColumnLength(column.ColumnType)
@@ -161,13 +161,13 @@ func (gu genUtil) InitColumn(tableId uint, column gen.GenTableColumn) gen.GenTab
 	return col
 }
 
-//ToModuleName 表名转业务名
+// ToModuleName 表名转业务名
 func (gu genUtil) ToModuleName(name string) string {
 	names := strings.Split(name, "_")
 	return names[len(names)-1]
 }
 
-//ToClassName 表名转类名
+// ToClassName 表名转类名
 func (gu genUtil) ToClassName(name string) string {
 	tablePrefix := config.Config.DbTablePrefix
 	if config.GenConfig.IsRemoveTablePrefix && tablePrefix != "" {
@@ -178,7 +178,7 @@ func (gu genUtil) ToClassName(name string) string {
 	return util.StringUtil.ToCamelCase(name)
 }
 
-//GetDbType 获取数据库类型字段
+// GetDbType 获取数据库类型字段
 func (gu genUtil) GetDbType(columnType string) string {
 	index := strings.IndexRune(columnType, '(')
 	if index < 0 {
@@ -187,7 +187,7 @@ func (gu genUtil) GetDbType(columnType string) string {
 	return columnType[:index]
 }
 
-//GetColumnLength 获取字段长度
+// GetColumnLength 获取字段长度
 func (gu genUtil) GetColumnLength(columnType string) int {
 	index := strings.IndexRune(columnType, '(')
 	if index < 0 {
@@ -200,7 +200,7 @@ func (gu genUtil) GetColumnLength(columnType string) int {
 	return length
 }
 
-//GetTablePriCol 获取主键列名称
+// GetTablePriCol 获取主键列名称
 func (gu genUtil) GetTablePriCol(columns []gen.GenTableColumn) (res gen.GenTableColumn) {
 	for _, col := range columns {
 		if col.IsPk == 1 {

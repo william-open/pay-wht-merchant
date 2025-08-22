@@ -6,19 +6,19 @@ import (
 	"github.com/jinzhu/copier"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"likeadmin/core"
+	"mwhtpay/core"
 	"net/http"
 	"strconv"
 )
 
-//RespType 响应类型
+// RespType 响应类型
 type RespType struct {
 	code int
 	msg  string
 	data interface{}
 }
 
-//Response 响应格式结构
+// Response 响应格式结构
 type Response struct {
 	Code int         `json:"code"`
 	Msg  string      `json:"msg"`
@@ -46,39 +46,39 @@ var (
 	SystemError = RespType{code: 500, msg: "系统错误"}
 )
 
-//Error 实现error方法
+// Error 实现error方法
 func (rt RespType) Error() string {
 	return strconv.Itoa(rt.code) + ":" + rt.msg
 }
 
-//Make 以响应类型生成信息
+// Make 以响应类型生成信息
 func (rt RespType) Make(msg string) RespType {
 	rt.msg = msg
 	return rt
 }
 
-//MakeData 以响应类型生成数据
+// MakeData 以响应类型生成数据
 func (rt RespType) MakeData(data interface{}) RespType {
 	rt.data = data
 	return rt
 }
 
-//Code 获取code
+// Code 获取code
 func (rt RespType) Code() int {
 	return rt.code
 }
 
-//Msg 获取msg
+// Msg 获取msg
 func (rt RespType) Msg() string {
 	return rt.msg
 }
 
-//Data 获取data
+// Data 获取data
 func (rt RespType) Data() interface{} {
 	return rt.data
 }
 
-//Result 统一响应
+// Result 统一响应
 func Result(c *gin.Context, resp RespType, data interface{}) {
 	if data == nil {
 		data = resp.data
@@ -93,7 +93,7 @@ func Result(c *gin.Context, resp RespType, data interface{}) {
 	})
 }
 
-//Copy 拷贝结构体
+// Copy 拷贝结构体
 func Copy(toValue interface{}, fromValue interface{}) interface{} {
 	if err := copier.Copy(toValue, fromValue); err != nil {
 		core.Logger.Errorf("Copy err: err=[%+v]", err)
@@ -102,24 +102,24 @@ func Copy(toValue interface{}, fromValue interface{}) interface{} {
 	return toValue
 }
 
-//Ok 正常响应
+// Ok 正常响应
 func Ok(c *gin.Context) {
 	Result(c, Success, []string{})
 }
 
-//OkWithMsg 正常响应附带msg
+// OkWithMsg 正常响应附带msg
 func OkWithMsg(c *gin.Context, msg string) {
 	resp := Success
 	resp.msg = msg
 	Result(c, resp, []string{})
 }
 
-//OkWithData 正常响应附带data
+// OkWithData 正常响应附带data
 func OkWithData(c *gin.Context, data interface{}) {
 	Result(c, Success, data)
 }
 
-//respLogger 打印日志
+// respLogger 打印日志
 func respLogger(resp RespType, template string, args ...interface{}) {
 	loggerFunc := core.Logger.WithOptions(zap.AddCallerSkip(2)).Warnf
 	if resp.code >= 500 {
@@ -128,26 +128,26 @@ func respLogger(resp RespType, template string, args ...interface{}) {
 	loggerFunc(template, args...)
 }
 
-//Fail 错误响应
+// Fail 错误响应
 func Fail(c *gin.Context, resp RespType) {
 	respLogger(resp, "Request Fail: url=[%s], resp=[%+v]", c.Request.URL.Path, resp)
 	Result(c, resp, []string{})
 }
 
-//FailWithMsg 错误响应附带msg
+// FailWithMsg 错误响应附带msg
 func FailWithMsg(c *gin.Context, resp RespType, msg string) {
 	resp.msg = msg
 	respLogger(resp, "Request FailWithMsg: url=[%s], resp=[%+v]", c.Request.URL.Path, resp)
 	Result(c, resp, []string{})
 }
 
-//FailWithData 错误响应附带data
+// FailWithData 错误响应附带data
 func FailWithData(c *gin.Context, resp RespType, data interface{}) {
 	respLogger(resp, "Request FailWithData: url=[%s], resp=[%+v], data=[%+v]", c.Request.URL.Path, resp, data)
 	Result(c, resp, data)
 }
 
-//IsFailWithResp 判断是否出现错误，并追加错误返回信息
+// IsFailWithResp 判断是否出现错误，并追加错误返回信息
 func IsFailWithResp(c *gin.Context, err error) bool {
 	if err == nil {
 		return false
@@ -167,7 +167,7 @@ func IsFailWithResp(c *gin.Context, err error) bool {
 	return true
 }
 
-//CheckAndResp 判断是否出现错误，并返回对应响应
+// CheckAndResp 判断是否出现错误，并返回对应响应
 func CheckAndResp(c *gin.Context, err error) {
 	if IsFailWithResp(c, err) {
 		return
@@ -175,7 +175,7 @@ func CheckAndResp(c *gin.Context, err error) {
 	Ok(c)
 }
 
-//CheckAndRespWithData 判断是否出现错误，并返回对应响应（带data数据）
+// CheckAndRespWithData 判断是否出现错误，并返回对应响应（带data数据）
 func CheckAndRespWithData(c *gin.Context, data interface{}, err error) {
 	if IsFailWithResp(c, err) {
 		return
@@ -183,7 +183,7 @@ func CheckAndRespWithData(c *gin.Context, data interface{}, err error) {
 	OkWithData(c, data)
 }
 
-//CheckErr 校验未知错误并抛出
+// CheckErr 校验未知错误并抛出
 func CheckErr(err error, template string, args ...interface{}) (e error) {
 	prefix := ": "
 	if len(args) > 0 {
@@ -197,7 +197,7 @@ func CheckErr(err error, template string, args ...interface{}) (e error) {
 	return
 }
 
-//CheckErrDBNotRecord 校验数据库记录不存在的错误
+// CheckErrDBNotRecord 校验数据库记录不存在的错误
 func CheckErrDBNotRecord(err error, msg string) (e error) {
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		core.Logger.WithOptions(zap.AddCallerSkip(1)).Infof("CheckErrDBNotRecord err: err=[%+v]", err)

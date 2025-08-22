@@ -7,8 +7,8 @@ import (
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/process"
-	"likeadmin/core"
 	"math"
+	"mwhtpay/core"
 	"os"
 	"runtime"
 	"strconv"
@@ -18,10 +18,10 @@ import (
 
 var ServerUtil = serverUtil{}
 
-//serverUtil 服务器信息获取工具
+// serverUtil 服务器信息获取工具
 type serverUtil struct{}
 
-//GetFmtSize 按照正确的格式缩放字节
+// GetFmtSize 按照正确的格式缩放字节
 func (su serverUtil) GetFmtSize(data uint64) string {
 	var factor float64 = 1024
 	res := float64(data)
@@ -34,7 +34,7 @@ func (su serverUtil) GetFmtSize(data uint64) string {
 	return fmt.Sprintf("%.2f%sB", res, "P")
 }
 
-//GetFmtTime 格式化显示时间 (毫秒)
+// GetFmtTime 格式化显示时间 (毫秒)
 func (su serverUtil) GetFmtTime(ms int64) (res string) {
 	rem := ms / 1000
 	days, rem := rem/86400, rem%86400
@@ -50,7 +50,7 @@ func (su serverUtil) GetFmtTime(ms int64) (res string) {
 	return res
 }
 
-//GetCpuInfo 获取CPU信息
+// GetCpuInfo 获取CPU信息
 func (su serverUtil) GetCpuInfo() (data map[string]interface{}) {
 	cnt, err := cpu.Counts(true)
 	if err != nil {
@@ -73,7 +73,7 @@ func (su serverUtil) GetCpuInfo() (data map[string]interface{}) {
 	}
 }
 
-//GetMemInfo 获取内存信息
+// GetMemInfo 获取内存信息
 func (su serverUtil) GetMemInfo() (data map[string]interface{}) {
 	number := math.Pow(1024, 3)
 	vm, err := mem.VirtualMemory()
@@ -89,7 +89,7 @@ func (su serverUtil) GetMemInfo() (data map[string]interface{}) {
 	}
 }
 
-//GetSysInfo 获取服务器信息
+// GetSysInfo 获取服务器信息
 func (su serverUtil) GetSysInfo() (data map[string]interface{}) {
 	infoStat, err := host.Info()
 	if err != nil {
@@ -110,7 +110,7 @@ func (su serverUtil) GetSysInfo() (data map[string]interface{}) {
 	}
 }
 
-//GetDiskInfo 获取磁盘信息
+// GetDiskInfo 获取磁盘信息
 func (su serverUtil) GetDiskInfo() (data []map[string]interface{}) {
 	partStats, err := disk.Partitions(false)
 	if err != nil {
@@ -137,7 +137,7 @@ func (su serverUtil) GetDiskInfo() (data []map[string]interface{}) {
 	return data
 }
 
-//GetGoInfo 获取Go环境及服务信息
+// GetGoInfo 获取Go环境及服务信息
 func (su serverUtil) GetGoInfo() (data map[string]interface{}) {
 	number := math.Pow(1024, 2)
 	curProc, err := process.NewProcess(int32(os.Getpid()))

@@ -3,12 +3,12 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"likeadmin/core"
-	"likeadmin/core/response"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
 	"runtime/debug"
 )
 
-//ErrorRecover 异常恢复中间件
+// ErrorRecover 异常恢复中间件
 func ErrorRecover() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {

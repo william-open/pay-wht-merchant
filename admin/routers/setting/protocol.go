@@ -2,12 +2,12 @@ package setting
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/setting"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/setting"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var ProtocolGroup = core.Group("/setting", newProtocolHandler, regProtocol, middleware.TokenAuth())
@@ -27,13 +27,13 @@ type protocolHandler struct {
 	srv setting.ISettingProtocolService
 }
 
-//detail 获取政策信息
+// detail 获取政策信息
 func (ph protocolHandler) detail(c *gin.Context) {
 	res, err := ph.srv.Detail()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//save 保存政策信息
+// save 保存政策信息
 func (ph protocolHandler) save(c *gin.Context) {
 	var pReq req.SettingProtocolReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &pReq)) {

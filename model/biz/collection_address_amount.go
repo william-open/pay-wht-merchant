@@ -2,7 +2,7 @@ package biz
 
 import (
 	"github.com/shopspring/decimal"
-	"likeadmin/util"
+	"mwhtpay/util"
 )
 
 // CollectionAddressAmount 归集钱包账户实体

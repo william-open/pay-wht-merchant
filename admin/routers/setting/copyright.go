@@ -2,12 +2,12 @@ package setting
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/setting"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/setting"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var CopyrightGroup = core.Group("/setting", newCopyrightHandler, regCopyright, middleware.TokenAuth())
@@ -27,13 +27,13 @@ type copyrightHandler struct {
 	srv setting.ISettingCopyrightService
 }
 
-//detail 获取备案信息
+// detail 获取备案信息
 func (ch copyrightHandler) detail(c *gin.Context) {
 	res, err := ch.srv.Detail()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//save 保存备案信息
+// save 保存备案信息
 func (ch copyrightHandler) save(c *gin.Context) {
 	var cReqs []req.SettingCopyrightItemReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSONArray(c, &cReqs)) {

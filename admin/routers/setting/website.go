@@ -2,12 +2,12 @@ package setting
 
 import (
 	"github.com/gin-gonic/gin"
-	"likeadmin/admin/schemas/req"
-	"likeadmin/admin/service/setting"
-	"likeadmin/core"
-	"likeadmin/core/response"
-	"likeadmin/middleware"
-	"likeadmin/util"
+	"mwhtpay/admin/schemas/req"
+	"mwhtpay/admin/service/setting"
+	"mwhtpay/core"
+	"mwhtpay/core/response"
+	"mwhtpay/middleware"
+	"mwhtpay/util"
 )
 
 var WebsiteGroup = core.Group("/setting", newWebsiteHandler, regWebsite, middleware.TokenAuth())
@@ -27,13 +27,13 @@ type websiteHandler struct {
 	srv setting.ISettingWebsiteService
 }
 
-//detail 获取网站信息
+// detail 获取网站信息
 func (wh websiteHandler) detail(c *gin.Context) {
 	res, err := wh.srv.Detail()
 	response.CheckAndRespWithData(c, res, err)
 }
 
-//save 保存网站信息
+// save 保存网站信息
 func (wh websiteHandler) save(c *gin.Context) {
 	var wsReq req.SettingWebsiteReq
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &wsReq)) {

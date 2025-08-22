@@ -1,8 +1,8 @@
 package resp
 
-import "likeadmin/core"
+import "mwhtpay/core"
 
-//SettingDictTypeResp 字典类型返回信息
+// SettingDictTypeResp 字典类型返回信息
 type SettingDictTypeResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	DictName   string      `json:"dictName" structs:"dictName"`     // 字典名称
@@ -13,7 +13,7 @@ type SettingDictTypeResp struct {
 	UpdateTime core.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
 }
 
-//SettingDictDataResp 字典数据返回信息
+// SettingDictDataResp 字典数据返回信息
 type SettingDictDataResp struct {
 	ID         uint        `json:"id" structs:"id"`                 // 主键
 	TypeId     uint        `json:"typeId" structs:"typeId"`         // 类型

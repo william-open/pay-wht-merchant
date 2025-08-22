@@ -1,8 +1,8 @@
 package util
 
 import (
-	"likeadmin/config"
-	"likeadmin/core"
+	"mwhtpay/config"
+	"mwhtpay/core"
 	"net/url"
 	"path"
 	"strings"
@@ -14,10 +14,10 @@ var (
 	publicPrefix = config.Config.PublicPrefix
 )
 
-//urlUtil 文件路径处理工具
+// urlUtil 文件路径处理工具
 type urlUtil struct{}
 
-//ToAbsoluteUrl 转绝对路径
+// ToAbsoluteUrl 转绝对路径
 func (uu urlUtil) ToAbsoluteUrl(u string) string {
 	// TODO: engine默认local
 	if u == "" {
