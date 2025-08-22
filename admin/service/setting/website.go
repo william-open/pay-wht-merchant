@@ -3,6 +3,7 @@ package setting
 import (
 	"gorm.io/gorm"
 	"likeadmin/admin/schemas/req"
+	"likeadmin/core"
 	"likeadmin/core/response"
 	"likeadmin/util"
 )
@@ -13,8 +14,13 @@ type ISettingWebsiteService interface {
 }
 
 // NewSettingWebsiteService 初始化
-func NewSettingWebsiteService(db *gorm.DB) ISettingWebsiteService {
-	return &settingWebsiteService{db: db}
+func NewSettingWebsiteService() ISettingWebsiteService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &settingWebsiteService{db: mainDB}
 }
 
 // settingWebsiteService 网站信息配置服务实现类

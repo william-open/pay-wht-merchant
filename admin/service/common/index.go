@@ -16,8 +16,12 @@ type IIndexService interface {
 }
 
 // NewIndexService 初始化
-func NewIndexService(db *gorm.DB) IIndexService {
-	return &indexService{db: db}
+func NewIndexService() IIndexService {
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &indexService{db: mainDB}
 }
 
 // indexService 主页服务实现类

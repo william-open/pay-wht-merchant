@@ -22,7 +22,8 @@ type envConfig struct {
 	UploadDirectory        string   `mapstructure:"UPLOAD_DIRECTORY"` // 上传文件路径
 	RedisUrl               string   `mapstructure:"REDIS_URL"`        // Redis源配置
 	RedisPoolSize          int      // Redis连接池大小
-	DatabaseUrl            string   `mapstructure:"DATABASE_URL"` // 数据源配置
+	DatabaseUrl            string   `mapstructure:"DATABASE_URL"`       // 数据源配置
+	OrderDatabaseUrl       string   `mapstructure:"ORDER_DATABASE_URL"` // 订单库数据源配置
 	DbTablePrefix          string   // Mysql表前缀
 	DbDefaultStringSize    uint     // 数据库string类型字段的默认长度
 	DbMaxIdleConns         int      // 数据库空闲连接池最大值
@@ -65,12 +66,13 @@ func loadConfig(envPath string) envConfig {
 		// 资源访问前缀
 		PublicPrefix: "/api/uploads",
 		// 上传文件路径
-		UploadDirectory: "/tmp/uploads/likeadmin-go/",
+		UploadDirectory: "/tmp/uploads/wht-go/",
 		// Redis源配置
 		RedisUrl:      "redis://localhost:6379",
 		RedisPoolSize: 100,
 		// 数据源配置
 		DatabaseUrl:            "root:root@tcp(localhost:3306)/likeadmin?charset=utf8mb4&parseTime=True&loc=Local",
+		OrderDatabaseUrl:       "root:root@tcp(localhost:3306)/likeadmin?charset=utf8mb4&parseTime=True&loc=Local",
 		DbTablePrefix:          "w_",
 		DbDefaultStringSize:    256,
 		DbMaxIdleConns:         10,
@@ -86,7 +88,7 @@ func loadConfig(envPath string) envConfig {
 		// 静态资源本地路径
 		StaticDirectory: "static",
 		// Redis键前缀
-		RedisPrefix: "Like:",
+		RedisPrefix: "M.WHT:",
 		// 上传图片限制
 		UploadImageSize: 1024 * 1024 * 10,
 		// 上传视频限制

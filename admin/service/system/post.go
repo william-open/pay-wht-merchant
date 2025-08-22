@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/schemas/resp"
+	"likeadmin/core"
 	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/model/system"
@@ -19,8 +20,13 @@ type ISystemAuthPostService interface {
 }
 
 // NewSystemAuthPostService 初始化
-func NewSystemAuthPostService(db *gorm.DB) ISystemAuthPostService {
-	return &systemAuthPostService{db: db}
+func NewSystemAuthPostService() ISystemAuthPostService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &systemAuthPostService{db: mainDB}
 }
 
 // systemAuthPostService 系统岗位服务实现类

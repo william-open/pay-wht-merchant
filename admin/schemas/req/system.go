@@ -6,7 +6,7 @@ import (
 
 // SystemLoginReq 系统登录参数
 type SystemLoginReq struct {
-	Username string `json:"username" binding:"required,min=2,max=20"` // 账号
+	Username string `json:"username" binding:"required,min=2,max=30"` // 账号
 	Password string `json:"password" binding:"required,min=6,max=32"` // 密码
 }
 

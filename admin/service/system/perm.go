@@ -3,6 +3,7 @@ package system
 import (
 	"gorm.io/gorm"
 	"likeadmin/config"
+	"likeadmin/core"
 	"likeadmin/core/response"
 	"likeadmin/model/system"
 	"likeadmin/util"
@@ -18,17 +19,22 @@ type ISystemAuthPermService interface {
 	BatchDeleteByMenuId(menuId uint) (e error)
 }
 
-//NewSystemAuthPermService 初始化
-func NewSystemAuthPermService(db *gorm.DB) ISystemAuthPermService {
-	return &systemAuthPermService{db: db}
+// NewSystemAuthPermService 初始化
+func NewSystemAuthPermService() ISystemAuthPermService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &systemAuthPermService{db: mainDB}
 }
 
-//systemAuthPermService 系统权限服务实现类
+// systemAuthPermService 系统权限服务实现类
 type systemAuthPermService struct {
 	db *gorm.DB
 }
 
-//SelectMenuIdsByRoleId 根据角色ID获取菜单ID
+// SelectMenuIdsByRoleId 根据角色ID获取菜单ID
 func (permSrv systemAuthPermService) SelectMenuIdsByRoleId(roleId uint) (menuIds []uint, e error) {
 	var role system.SystemAuthRole
 	err := permSrv.db.Where("id = ? AND is_disable = ?", roleId, 0).Limit(1).First(&role).Error
@@ -46,7 +52,7 @@ func (permSrv systemAuthPermService) SelectMenuIdsByRoleId(roleId uint) (menuIds
 	return
 }
 
-//CacheRoleMenusByRoleId 缓存角色菜单
+// CacheRoleMenusByRoleId 缓存角色菜单
 func (permSrv systemAuthPermService) CacheRoleMenusByRoleId(roleId uint) (e error) {
 	var perms []system.SystemAuthPerm
 	err := permSrv.db.Where("role_id = ?", roleId).Find(&perms).Error
@@ -74,7 +80,7 @@ func (permSrv systemAuthPermService) CacheRoleMenusByRoleId(roleId uint) (e erro
 	return
 }
 
-//BatchSaveByMenuIds 批量写入角色菜单
+// BatchSaveByMenuIds 批量写入角色菜单
 func (permSrv systemAuthPermService) BatchSaveByMenuIds(roleId uint, menuIds string, db *gorm.DB) (e error) {
 	if menuIds == "" {
 		return
@@ -97,7 +103,7 @@ func (permSrv systemAuthPermService) BatchSaveByMenuIds(roleId uint, menuIds str
 	return
 }
 
-//BatchDeleteByRoleId 批量删除角色菜单(根据角色ID)
+// BatchDeleteByRoleId 批量删除角色菜单(根据角色ID)
 func (permSrv systemAuthPermService) BatchDeleteByRoleId(roleId uint, db *gorm.DB) (e error) {
 	if db == nil {
 		db = permSrv.db
@@ -107,7 +113,7 @@ func (permSrv systemAuthPermService) BatchDeleteByRoleId(roleId uint, db *gorm.D
 	return
 }
 
-//BatchDeleteByMenuId 批量删除角色菜单(根据菜单ID)
+// BatchDeleteByMenuId 批量删除角色菜单(根据菜单ID)
 func (permSrv systemAuthPermService) BatchDeleteByMenuId(menuId uint) (e error) {
 	err := permSrv.db.Delete(&system.SystemAuthPerm{}, "menu_id = ?", menuId).Error
 	e = response.CheckErr(err, "BatchDeleteByMenuId Delete err")

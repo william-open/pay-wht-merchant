@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/schemas/resp"
+	"likeadmin/core"
 	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/model/biz"
@@ -16,8 +17,13 @@ type IBizAddressService interface {
 }
 
 // NewBizAddressService 初始化
-func NewBizAddressService(db *gorm.DB) IBizAddressService {
-	return &bizAddressService{db: db}
+func NewBizAddressService() IBizAddressService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &bizAddressService{db: mainDB}
 }
 
 // bizAddressService 字典数据服务实现类

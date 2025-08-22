@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	permSrv  = system.NewSystemAuthPermService(core.GetDB())
-	roleSrv  = system.NewSystemAuthRoleService(core.GetDB(), permSrv)
-	adminSrv = system.NewSystemAuthAdminService(core.GetDB(), permSrv, roleSrv)
+	permSrv  = system.NewSystemAuthPermService()
+	roleSrv  = system.NewSystemAuthRoleService(permSrv)
+	adminSrv = system.NewSystemAuthAdminService(permSrv, roleSrv)
 )
 
 // TokenAuth Token认证中间件

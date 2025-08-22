@@ -1,7 +1,10 @@
 package main
 
 import (
+	"database/sql"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 	adminRouters "likeadmin/admin/routers"
 	admin "likeadmin/admin/service"
 	"likeadmin/config"
@@ -16,19 +19,44 @@ import (
 	"time"
 )
 
-//initDI 初始化DI
+// initDI 初始化DI
+// initDI 初始化DI
 func initDI() {
+	// 1. 获取admin模块的初始化函数集合
 	regFunctions := admin.InitFunctions
+
+	// 2. 追加gen模块的初始化函数
 	regFunctions = append(regFunctions, gen.InitFunctions...)
-	regFunctions = append(regFunctions, core.GetDB)
+
+	// 3. 注册数据库连接函数（使用标识符）
+	// 注册主数据库
+	if err := core.ProvideForDIWithName(core.DBMain, core.GetDB); err != nil {
+		log.Fatalln("Failed to register main DB:", err)
+	}
+
+	// 注册订单数据库
+	if err := core.ProvideForDIWithName(core.DBOrder, core.GetOrderDB); err != nil {
+		log.Fatalln("Failed to register order DB:", err)
+	}
+
+	// 注册数据库获取函数（可以通过标识符获取任意数据库）
+	if err := core.ProvideForDIWithName("databaseFactory", func(name string) (*gorm.DB, bool) {
+		return core.GetDatabase(name)
+	}); err != nil {
+		log.Fatalln("Failed to register database factory:", err)
+	}
+
+	// 4. 遍历所有注册函数，进行依赖注入
 	for i := 0; i < len(regFunctions); i++ {
 		if err := core.ProvideForDI(regFunctions[i]); err != nil {
 			log.Fatalln(err)
 		}
 	}
+
+	log.Println("DI initialized with multiple database support")
 }
 
-//initRouter 初始化router
+// initRouter 初始化router
 func initRouter() *gin.Engine {
 	// 初始化gin
 	gin.SetMode(config.Config.GinMode)
@@ -60,7 +88,7 @@ func initRouter() *gin.Engine {
 	return router
 }
 
-//initServer 初始化server
+// initServer 初始化server
 func initServer(router *gin.Engine) *http.Server {
 	return &http.Server{
 		Addr:           ":" + strconv.Itoa(config.Config.ServerPort),
@@ -73,11 +101,31 @@ func initServer(router *gin.Engine) *http.Server {
 
 func main() {
 	// 刷新日志缓冲
-	defer core.Logger.Sync()
+	defer func(Logger *zap.SugaredLogger) {
+		err := Logger.Sync()
+		if err != nil {
+
+		}
+	}(core.Logger)
 	// 程序结束前关闭数据库连接
 	if core.GetDB() != nil {
 		db, _ := core.GetDB().DB()
-		defer db.Close()
+		defer func(db *sql.DB) {
+			err := db.Close()
+			if err != nil {
+
+			}
+		}(db)
+	}
+	// 订单库
+	if core.GetOrderDB() != nil {
+		db, _ := core.GetOrderDB().DB()
+		defer func(db *sql.DB) {
+			err := db.Close()
+			if err != nil {
+
+			}
+		}(db)
 	}
 	// 初始化DI
 	initDI()

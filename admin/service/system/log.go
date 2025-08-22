@@ -16,17 +16,22 @@ type ISystemLogsServer interface {
 	Login(page request.PageReq, logReq req.SystemLogLoginReq) (res response.PageResp, e error)
 }
 
-//NewSystemLogsServer 初始化
-func NewSystemLogsServer(db *gorm.DB) ISystemLogsServer {
-	return &systemLogsServer{db: db}
+// NewSystemLogsServer 初始化
+func NewSystemLogsServer() ISystemLogsServer {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &systemLogsServer{db: mainDB}
 }
 
-//systemLogsServer 系统日志服务实现类
+// systemLogsServer 系统日志服务实现类
 type systemLogsServer struct {
 	db *gorm.DB
 }
 
-//Operate 系统操作日志
+// Operate 系统操作日志
 func (logSrv systemLogsServer) Operate(page request.PageReq, logReq req.SystemLogOperateReq) (res response.PageResp, e error) {
 	// 分页信息
 	limit := page.PageSize
@@ -82,7 +87,7 @@ func (logSrv systemLogsServer) Operate(page request.PageReq, logReq req.SystemLo
 	}, nil
 }
 
-//Login 系统登录日志
+// Login 系统登录日志
 func (logSrv systemLogsServer) Login(page request.PageReq, logReq req.SystemLogLoginReq) (res response.PageResp, e error) {
 	// 分页信息
 	limit := page.PageSize

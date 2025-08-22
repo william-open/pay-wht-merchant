@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/schemas/resp"
+	"likeadmin/core"
 	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/model/biz"
@@ -15,8 +16,13 @@ type IBizTransactionService interface {
 }
 
 // NewBizTransactionService 初始化
-func NewBizTransactionService(db *gorm.DB) IBizTransactionService {
-	return &bizTransactionService{db: db}
+func NewBizTransactionService() IBizTransactionService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &bizTransactionService{db: mainDB}
 }
 
 // bizTransactionService 字典数据服务实现类

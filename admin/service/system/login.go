@@ -22,18 +22,23 @@ type ISystemLoginService interface {
 	RecordLoginLog(c *gin.Context, adminId uint, username string, errStr string) (e error)
 }
 
-//NewSystemLoginService 初始化
-func NewSystemLoginService(db *gorm.DB, adminSrv ISystemAuthAdminService) ISystemLoginService {
-	return &systemLoginService{db: db, adminSrv: adminSrv}
+// NewSystemLoginService 初始化
+func NewSystemLoginService(adminSrv ISystemAuthAdminService) ISystemLoginService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &systemLoginService{db: mainDB, adminSrv: adminSrv}
 }
 
-//systemLoginService 系统登录服务实现类
+// systemLoginService 系统登录服务实现类
 type systemLoginService struct {
 	db       *gorm.DB
 	adminSrv ISystemAuthAdminService
 }
 
-//Login 登录
+// Login 登录
 func (loginSrv systemLoginService) Login(c *gin.Context, req *req.SystemLoginReq) (res resp.SystemLoginResp, e error) {
 	sysAdmin, err := loginSrv.adminSrv.FindByUsername(req.Username)
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
@@ -127,13 +132,13 @@ func (loginSrv systemLoginService) Login(c *gin.Context, req *req.SystemLoginReq
 	return resp.SystemLoginResp{Token: token}, nil
 }
 
-//Logout 退出
+// Logout 退出
 func (loginSrv systemLoginService) Logout(req *req.SystemLogoutReq) (e error) {
 	util.RedisUtil.Del(config.AdminConfig.BackstageTokenKey + req.Token)
 	return
 }
 
-//RecordLoginLog 记录登录日志
+// RecordLoginLog 记录登录日志
 func (loginSrv systemLoginService) RecordLoginLog(c *gin.Context, adminId uint, username string, errStr string) (e error) {
 	ua := core.UAParser.Parse(c.GetHeader("user-agent"))
 	var status uint8

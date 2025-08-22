@@ -5,6 +5,7 @@ import (
 	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/schemas/resp"
 	"likeadmin/config"
+	"likeadmin/core"
 	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/model/biz"
@@ -19,8 +20,13 @@ type IBizCurrencyService interface {
 }
 
 // NewBizCurrencyService 初始化
-func NewBizCurrencyService(db *gorm.DB) IBizCurrencyService {
-	return &bizCurrencyService{db: db}
+func NewBizCurrencyService() IBizCurrencyService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &bizCurrencyService{db: mainDB}
 }
 
 // bizCurrencyService 字典数据服务实现类

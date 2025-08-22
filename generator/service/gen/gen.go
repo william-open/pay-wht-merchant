@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"gorm.io/gorm"
 	"likeadmin/config"
+	"likeadmin/core"
 	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/generator"
@@ -28,17 +29,22 @@ type IGenerateService interface {
 	DownloadCode(tableNames []string) ([]byte, error)
 }
 
-//NewGenerateService 初始化
-func NewGenerateService(db *gorm.DB) IGenerateService {
-	return &generateService{db: db}
+// NewGenerateService 初始化
+func NewGenerateService() IGenerateService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &generateService{db: mainDB}
 }
 
-//GenerateService 代码生成服务实现类
+// GenerateService 代码生成服务实现类
 type generateService struct {
 	db *gorm.DB
 }
 
-//DbTables 库表列表
+// DbTables 库表列表
 func (genSrv generateService) DbTables(page request.PageReq, dbReq req.DbTablesReq) (res response.PageResp, e error) {
 	// 分页信息
 	limit := page.PageSize
@@ -64,7 +70,7 @@ func (genSrv generateService) DbTables(page request.PageReq, dbReq req.DbTablesR
 	}, nil
 }
 
-//List 生成列表
+// List 生成列表
 func (genSrv generateService) List(page request.PageReq, listReq req.ListTableReq) (res response.PageResp, e error) {
 	// 分页信息
 	limit := page.PageSize
@@ -102,7 +108,7 @@ func (genSrv generateService) List(page request.PageReq, listReq req.ListTableRe
 	}, nil
 }
 
-//Detail 生成详情
+// Detail 生成详情
 func (genSrv generateService) Detail(id uint) (res resp.GenTableDetailResp, e error) {
 	var genTb gen.GenTable
 	err := genSrv.db.Where("id = ?", id).Limit(1).First(&genTb).Error
@@ -130,7 +136,7 @@ func (genSrv generateService) Detail(id uint) (res resp.GenTableDetailResp, e er
 	}, e
 }
 
-//ImportTable 导入表结构
+// ImportTable 导入表结构
 func (genSrv generateService) ImportTable(tableNames []string) (e error) {
 	var dbTbs []resp.DbTableResp
 	err := generator.GenUtil.GetDbTablesQueryByNames(genSrv.db, tableNames).Find(&dbTbs).Error
@@ -171,7 +177,7 @@ func (genSrv generateService) ImportTable(tableNames []string) (e error) {
 	return nil
 }
 
-//SyncTable 同步表结构
+// SyncTable 同步表结构
 func (genSrv generateService) SyncTable(id uint) (e error) {
 	//旧数据
 	var genTable gen.GenTable
@@ -254,7 +260,7 @@ func (genSrv generateService) SyncTable(id uint) (e error) {
 	return nil
 }
 
-//EditTable 编辑表结构
+// EditTable 编辑表结构
 func (genSrv generateService) EditTable(editReq req.EditTableReq) (e error) {
 	if editReq.GenTpl == generator.GenConstants.TplTree {
 		if editReq.TreePrimary == "" {
@@ -295,7 +301,7 @@ func (genSrv generateService) EditTable(editReq req.EditTableReq) (e error) {
 	return
 }
 
-//DelTable 删除表结构
+// DelTable 删除表结构
 func (genSrv generateService) DelTable(ids []uint) (e error) {
 	err := genSrv.db.Transaction(func(tx *gorm.DB) error {
 		txErr := tx.Delete(&gen.GenTable{}, "id in ?", ids).Error
@@ -312,7 +318,7 @@ func (genSrv generateService) DelTable(ids []uint) (e error) {
 	return
 }
 
-//getSubTableInfo 根据主表获取子表主键和列信息
+// getSubTableInfo 根据主表获取子表主键和列信息
 func (genSrv generateService) getSubTableInfo(genTable gen.GenTable) (pkCol gen.GenTableColumn, cols []gen.GenTableColumn, e error) {
 	if genTable.SubTableName == "" || genTable.SubTableFk == "" {
 		return
@@ -333,7 +339,7 @@ func (genSrv generateService) getSubTableInfo(genTable gen.GenTable) (pkCol gen.
 	return
 }
 
-//renderCodeByTable 根据主表和模板文件渲染模板代码
+// renderCodeByTable 根据主表和模板文件渲染模板代码
 func (genSrv generateService) renderCodeByTable(genTable gen.GenTable) (res map[string]string, e error) {
 	var columns []gen.GenTableColumn
 	err := genSrv.db.Where("table_id = ?", genTable.ID).Order("sort").Find(&columns).Error
@@ -358,7 +364,7 @@ func (genSrv generateService) renderCodeByTable(genTable gen.GenTable) (res map[
 	return
 }
 
-//PreviewCode 预览代码
+// PreviewCode 预览代码
 func (genSrv generateService) PreviewCode(id uint) (res map[string]string, e error) {
 	var genTable gen.GenTable
 	err := genSrv.db.Where("id = ?", id).Limit(1).First(&genTable).Error
@@ -380,7 +386,7 @@ func (genSrv generateService) PreviewCode(id uint) (res map[string]string, e err
 	return
 }
 
-//GenCode 生成代码 (自定义路径)
+// GenCode 生成代码 (自定义路径)
 func (genSrv generateService) GenCode(tableName string) (e error) {
 	var genTable gen.GenTable
 	err := genSrv.db.Where("table_name = ?", tableName).Order("id desc").Limit(1).First(&genTable).Error
@@ -405,7 +411,7 @@ func (genSrv generateService) GenCode(tableName string) (e error) {
 	return
 }
 
-//genZipCode 生成代码 (压缩包下载)
+// genZipCode 生成代码 (压缩包下载)
 func (genSrv generateService) genZipCode(zipWriter *zip.Writer, tableName string) (e error) {
 	var genTable gen.GenTable
 	err := genSrv.db.Where("table_name = ?", tableName).Order("id desc").Limit(1).First(&genTable).Error
@@ -428,7 +434,7 @@ func (genSrv generateService) genZipCode(zipWriter *zip.Writer, tableName string
 	return
 }
 
-//DownloadCode 下载代码
+// DownloadCode 下载代码
 func (genSrv generateService) DownloadCode(tableNames []string) ([]byte, error) {
 	buf := new(bytes.Buffer)
 	zipWriter := zip.NewWriter(buf)

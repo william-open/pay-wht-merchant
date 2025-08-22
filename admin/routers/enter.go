@@ -37,4 +37,6 @@ var InitRouters = []*core.GroupBase{
 	biz.AddressGroup,
 	biz.CollectionGroup,
 	biz.CollectionAddressGroup,
+	biz.ChannelProductGroup,
+	biz.OrderGroup,
 }

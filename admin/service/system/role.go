@@ -6,6 +6,7 @@ import (
 	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/schemas/resp"
 	"likeadmin/config"
+	"likeadmin/core"
 	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/model/system"
@@ -24,8 +25,13 @@ type ISystemAuthRoleService interface {
 }
 
 // NewSystemAuthRoleService 初始化
-func NewSystemAuthRoleService(db *gorm.DB, permSrv ISystemAuthPermService) ISystemAuthRoleService {
-	return &systemAuthRoleService{db: db, permSrv: permSrv}
+func NewSystemAuthRoleService(permSrv ISystemAuthPermService) ISystemAuthRoleService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &systemAuthRoleService{db: mainDB, permSrv: permSrv}
 }
 
 // systemAuthRoleService 系统角色服务实现类

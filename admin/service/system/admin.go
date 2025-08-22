@@ -32,8 +32,12 @@ type ISystemAuthAdminService interface {
 }
 
 // NewSystemAuthAdminService 初始化
-func NewSystemAuthAdminService(db *gorm.DB, permSrv ISystemAuthPermService, roleSrv ISystemAuthRoleService) ISystemAuthAdminService {
-	return &systemAuthAdminService{db: db, permSrv: permSrv, roleSrv: roleSrv}
+func NewSystemAuthAdminService(permSrv ISystemAuthPermService, roleSrv ISystemAuthRoleService) ISystemAuthAdminService {
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &systemAuthAdminService{db: mainDB, permSrv: permSrv, roleSrv: roleSrv}
 }
 
 // systemAuthAdminService 系统管理员服务实现类

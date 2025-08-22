@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/schemas/resp"
+	"likeadmin/core"
 	"likeadmin/core/request"
 	"likeadmin/core/response"
 	"likeadmin/model/biz"
@@ -15,8 +16,13 @@ type IBizCollectionService interface {
 }
 
 // NewBizCollectionService 初始化
-func NewBizCollectionService(db *gorm.DB) IBizCollectionService {
-	return &bizCollectionService{db: db}
+func NewBizCollectionService() IBizCollectionService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &bizCollectionService{db: mainDB}
 }
 
 // bizCollectionService 归集数据服务实现类

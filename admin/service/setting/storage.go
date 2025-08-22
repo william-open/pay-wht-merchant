@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"likeadmin/admin/schemas/req"
+	"likeadmin/core"
 	"likeadmin/core/response"
 	"likeadmin/util"
 )
@@ -15,12 +16,17 @@ type ISettingStorageService interface {
 	Change(alias string, status int) (e error)
 }
 
-//NewSettingStorageService 初始化
-func NewSettingStorageService(db *gorm.DB) ISettingStorageService {
-	return &settingStorageService{db: db}
+// NewSettingStorageService 初始化
+func NewSettingStorageService() ISettingStorageService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &settingStorageService{db: mainDB}
 }
 
-//settingStorageService 存储配置服务实现类
+// settingStorageService 存储配置服务实现类
 type settingStorageService struct {
 	db *gorm.DB
 }
@@ -29,7 +35,7 @@ var storageList = []map[string]interface{}{
 	{"name": "本地存储", "alias": "local", "describe": "存储在本地服务器", "status": 0},
 }
 
-//List 存储列表
+// List 存储列表
 func (sSrv settingStorageService) List() ([]map[string]interface{}, error) {
 	// TODO: engine默认local
 	engine := "local"
@@ -42,7 +48,7 @@ func (sSrv settingStorageService) List() ([]map[string]interface{}, error) {
 	return mapList, nil
 }
 
-//Detail 存储详情
+// Detail 存储详情
 func (sSrv settingStorageService) Detail(alias string) (res map[string]interface{}, e error) {
 	// TODO: engine默认local
 	engine := "local"
@@ -61,7 +67,7 @@ func (sSrv settingStorageService) Detail(alias string) (res map[string]interface
 	}, nil
 }
 
-//Edit 存储编辑
+// Edit 存储编辑
 func (sSrv settingStorageService) Edit(editReq req.SettingStorageEditReq) (e error) {
 	// TODO: engine默认local
 	engine := "local"
@@ -85,7 +91,7 @@ func (sSrv settingStorageService) Edit(editReq req.SettingStorageEditReq) (e err
 	return
 }
 
-//Change 存储切换
+// Change 存储切换
 func (sSrv settingStorageService) Change(alias string, status int) (e error) {
 	// TODO: engine默认local
 	engine := "local"

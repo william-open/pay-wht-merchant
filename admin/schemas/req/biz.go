@@ -103,3 +103,25 @@ type BizCollectionAddressBalanceReq struct {
 	Address string `form:"address" binding:"max=200"`   // 钱包地址
 	MId     uint   `form:"mId" binding:"required,gt=0"` // 商户ID
 }
+
+// BizChannelProductListReq 通道产品列表参数
+type BizChannelProductListReq struct {
+	Keyword string `form:"keyword" binding:"max=200"`   // 关键字
+	MId     uint   `form:"mId" binding:"required,gt=0"` // 商户ID
+}
+
+// BizChannelProductDetailReq 通道产品数据详情参数
+type BizChannelProductDetailReq struct {
+	ID uint `form:"id" binding:"required,gt=0"` // 主键
+}
+
+// BizCollectOrderListReq 收款订单列表参数
+type BizCollectOrderListReq struct {
+	Keyword    string `query:"keyword" form:"keyword"`
+	ChannelId  int64  `query:"channelId" form:"channelId"`
+	UpChanelId int64  `query:"upChanelId" form:"upChanelId"`
+	Status     string `query:"status" form:"status"`
+	Currency   string `query:"currency" form:"currency"`
+	YearMonth  string `query:"yearMonth" form:"yearMonth"`
+	MId        uint   `form:"mId" binding:"required,gt=0"` // 商户ID
+}

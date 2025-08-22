@@ -7,6 +7,7 @@ import (
 	"likeadmin/admin/schemas/req"
 	"likeadmin/admin/schemas/resp"
 	"likeadmin/config"
+	"likeadmin/core"
 	"likeadmin/core/response"
 	"likeadmin/model/system"
 	"likeadmin/util"
@@ -22,8 +23,13 @@ type ISystemAuthMenuService interface {
 }
 
 // NewSystemAuthMenuService 初始化
-func NewSystemAuthMenuService(db *gorm.DB, permSrv ISystemAuthPermService) ISystemAuthMenuService {
-	return &systemAuthMenuService{db: db, permSrv: permSrv}
+func NewSystemAuthMenuService(permSrv ISystemAuthPermService) ISystemAuthMenuService {
+	// 通过DI获取主数据库连接
+	mainDB, exists := core.GetDatabase(core.DBMain)
+	if !exists {
+		panic("main database not initialized")
+	}
+	return &systemAuthMenuService{db: mainDB, permSrv: permSrv}
 }
 
 // systemAuthMenuService 系统菜单服务实现类
