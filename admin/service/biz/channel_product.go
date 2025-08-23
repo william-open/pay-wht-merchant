@@ -44,7 +44,13 @@ func (cSrv bizChannelProductService) List(page request.PageReq, listReq req.BizC
 		Joins("JOIN w_pay_way AS b ON a.sys_channel_id = b.id").
 		Joins("JOIN w_currency_code AS c ON a.currency = c.`code`").
 		Joins("JOIN w_merchant AS d ON a.m_id = d.m_id").
-		Select("a.id,a.default_rate,a.single_fee,a.order_range,b.coding as channel_code,b.title as channel_title,c.country")
+		Select("b.type,a.id,a.default_rate,a.single_fee,a.order_range,b.coding as channel_code,b.title as channel_title,c.country")
+	if listReq.Keyword != "" {
+		queryDb = queryDb.Where("order_id LIKE ? or m_order_id LIKE ? or account_no LIKE ? or account_name LIKE ?", "%"+listReq.Keyword+"%", "%"+listReq.Keyword+"%", "%"+listReq.Keyword+"%", "%"+listReq.Keyword+"%")
+	}
+	if listReq.Status != "" {
+		queryDb = queryDb.Where("status = ?", listReq.Status)
+	}
 	var err = queryDb.
 		Limit(limit).
 		Offset(offset).
