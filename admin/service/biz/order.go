@@ -56,7 +56,7 @@ func (cSrv bizOrderService) CollectList(page request.PageReq, listReq req.BizCol
 	// 遍历所有分片表
 	for _, table := range generateOrderTableNames("p_order", yearMonth) {
 		var tableOrders []resp.OrderReceiveListResponse
-		query := cSrv.db.Table(table)
+		query := cSrv.db.Table(table).Where("m_id = ?", listReq.MId)
 
 		if listReq.Keyword != "" {
 			query = query.Where("order_id LIKE ? or m_order_id LIKE ?", "%"+listReq.Keyword+"%", "%"+listReq.Keyword+"%")
@@ -123,7 +123,7 @@ func (cSrv bizOrderService) PayoutList(page request.PageReq, listReq req.BizPayo
 	// 遍历所有分片表
 	for _, table := range generateOrderTableNames("p_out_order", yearMonth) {
 		var tableOrders []resp.OrderPayoutListResponse
-		query := cSrv.db.Table(table)
+		query := cSrv.db.Table(table).Where("m_id = ?", listReq.MId)
 
 		if listReq.Keyword != "" {
 			query = query.Where("order_id LIKE ? or m_order_id LIKE ? or account_no LIKE ? or account_name LIKE ?", "%"+listReq.Keyword+"%", "%"+listReq.Keyword+"%", "%"+listReq.Keyword+"%", "%"+listReq.Keyword+"%")
