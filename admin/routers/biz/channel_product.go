@@ -1,9 +1,11 @@
 package biz
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"mwhtpay/admin/schemas/req"
 	"mwhtpay/admin/service/biz"
+	"mwhtpay/config"
 	"mwhtpay/core"
 	"mwhtpay/core/request"
 	"mwhtpay/core/response"
@@ -30,12 +32,12 @@ type channelProductHandler struct {
 
 // list 通道产品数据列表
 func (ch channelProductHandler) list(c *gin.Context) {
-	//var mIdStr, _ = c.Get(config.AdminConfig.ReqAdminMIdKey)
-	//var mId, _ = util.ToolsUtil.StringToUint(fmt.Sprintf("%v", mIdStr))
+	var mIdStr, _ = c.Get(config.AdminConfig.ReqAdminMIdKey)
+	var mId, _ = util.ToolsUtil.StringToUint(fmt.Sprintf("%v", mIdStr))
 	var page request.PageReq
 	var listReq req.BizChannelProductListReq
-	//listReq.MId = mId
-	listReq.MId = 18
+	listReq.MId = mId
+	//listReq.MId = 18
 	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &page)) {
 		return
 	}
