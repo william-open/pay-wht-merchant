@@ -124,7 +124,7 @@ type BizCollectOrderListReq struct {
 	Status     string `query:"status" form:"status"`
 	Currency   string `query:"currency" form:"currency"`
 	YearMonth  string `query:"yearMonth" form:"yearMonth"`
-	MId        uint   `form:"mId" binding:"required,gt=0"` // 商户ID
+	MId        uint   `query:"mId" binding:"required,gt=0"` // 商户ID
 }
 
 // BizPayoutOrderListReq 付款订单列表参数
@@ -136,4 +136,31 @@ type BizPayoutOrderListReq struct {
 	Currency   string `query:"currency" form:"currency"`
 	YearMonth  string `query:"yearMonth" form:"yearMonth"`
 	MId        uint   `form:"mId" binding:"required,gt=0"` // 商户ID
+}
+
+// BizIpWhiteListReq IP白名单列表参数
+type BizIpWhiteListReq struct {
+	Keyword string `form:"keyword" binding:"max=200"`   // 关键字
+	MId     uint   `form:"mId" binding:"required,gt=0"` // 商户ID
+	Status  string `query:"status" form:"status"`
+}
+
+// BizSaveGoogleCodeReq 保存谷歌验证码参数
+type BizSaveGoogleCodeReq struct {
+	PayPassword  string `form:"payPassword" json:"payPassword" binding:"required"`   // 支付密码
+	GoogleCode   string `form:"googleCode" json:"googleCode"`                        // 谷歌验证码
+	GoogleSecret string `form:"googleSecret" json:"googleSecret" binding:"required"` // 新谷歌密钥
+}
+
+// BizSavePayPasswordReq 保存支付密码参数
+type BizSavePayPasswordReq struct {
+	OldPayPassword string `form:"oldPayPassword" json:"oldPayPassword" binding:"required"` // 原支付密码
+	NewPayPassword string `form:"newPayPassword" json:"newPayPassword" binding:"required"` // 新支付密码
+	GoogleCode     string `form:"googleCode" json:"googleCode"`                            // 谷歌验证码
+}
+
+// BizDockingViewKeyReq 查看对接密钥
+type BizDockingViewKeyReq struct {
+	PayPassword string `form:"payPassword" json:"payPassword" binding:"required"` // 支付密码
+	GoogleCode  string `form:"googleCode" json:"googleCode"`                      // 谷歌验证码
 }

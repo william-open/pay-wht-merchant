@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
 	"mwhtpay/admin/schemas/req"
 	"mwhtpay/admin/schemas/resp"
 	"mwhtpay/config"
@@ -76,6 +77,21 @@ func (loginSrv systemLoginService) Login(c *gin.Context, req *req.SystemLoginReq
 		}
 		e = response.LoginAccountError
 		return
+	}
+	//如果启动了谷歌验证码
+	if sysAdmin.IsGoogleEnabled > 0 {
+		// 添加TOTP验证的容错机制
+		valid, err := util.VerifyUtil.ValidateTOTPWithRetry(req.GoogleCode, sysAdmin.GoogleSecret)
+		if err != nil {
+			log.Printf("TOTP验证错误: %v", err)
+			e = response.GoogleVerifyInvalid
+			return
+		}
+
+		if !valid {
+			e = response.GoogleVerifyInvalid
+			return
+		}
 	}
 	defer func() {
 		if r := recover(); r != nil {

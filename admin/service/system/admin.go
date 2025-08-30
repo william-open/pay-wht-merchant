@@ -409,3 +409,41 @@ func (adminSrv systemAuthAdminService) CacheAdminUserByUid(id uint) (err error) 
 	util.RedisUtil.HSet(config.AdminConfig.BackstageManageKey, strconv.FormatUint(uint64(admin.ID), 10), str, 0)
 	return nil
 }
+
+// UpdateGoogle 管理员谷歌验证码
+func (adminSrv systemAuthAdminService) UpdateGoogle(c *gin.Context, updateReq req.SystemAuthAdminUpdateGoogleReq, adminId uint) (e error) {
+	// 检查id
+	var admin system.SystemAuthAdmin
+	err := adminSrv.db.Where("id = ? AND is_delete = ?", adminId, 0).Limit(1).First(&admin).Error
+	if e = response.CheckErrDBNotRecord(err, "账号不存在了!"); e != nil {
+		return
+	}
+	if e = response.CheckErr(err, "Update First err"); e != nil {
+		return
+	}
+	// 更新管理员信息
+	adminMap := structs.Map(updateReq)
+
+	err = adminSrv.db.Model(&admin).Updates(adminMap).Error
+	if e = response.CheckErr(err, "Update Updates err"); e != nil {
+		return
+	}
+	adminSrv.CacheAdminUserByUid(adminId)
+	// 如果更改自己的密码,则删除旧缓存
+	if updateReq.GoogleSecret != "" {
+		token := c.Request.Header.Get("token")
+		util.RedisUtil.Del(config.AdminConfig.BackstageTokenKey + token)
+		adminSetKey := config.AdminConfig.BackstageTokenSet + strconv.FormatUint(uint64(adminId), 10)
+		ts := util.RedisUtil.SGet(adminSetKey)
+		if len(ts) > 0 {
+			var tokenKeys []string
+			for _, t := range ts {
+				tokenKeys = append(tokenKeys, config.AdminConfig.BackstageTokenKey+t)
+			}
+			util.RedisUtil.Del(tokenKeys...)
+		}
+		util.RedisUtil.Del(adminSetKey)
+		util.RedisUtil.SSet(adminSetKey, token)
+	}
+	return
+}

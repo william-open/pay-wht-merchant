@@ -34,10 +34,11 @@ var (
 	RequestMethodError  = RespType{code: 312, msg: "请求方法错误"}
 	AssertArgumentError = RespType{code: 313, msg: "断言参数错误"}
 
-	LoginAccountError = RespType{code: 330, msg: "登录账号或密码错误"}
-	LoginDisableError = RespType{code: 331, msg: "登录账号已被禁用了"}
-	TokenEmpty        = RespType{code: 332, msg: "token参数为空"}
-	TokenInvalid      = RespType{code: 333, msg: "token参数无效"}
+	LoginAccountError   = RespType{code: 330, msg: "登录账号或密码错误"}
+	LoginDisableError   = RespType{code: 331, msg: "登录账号已被禁用了"}
+	TokenEmpty          = RespType{code: 332, msg: "token参数为空"}
+	TokenInvalid        = RespType{code: 333, msg: "token参数无效"}
+	GoogleVerifyInvalid = RespType{code: 334, msg: "谷歌验证码验证无效"}
 
 	NoPermission    = RespType{code: 403, msg: "无相关权限"}
 	Request404Error = RespType{code: 404, msg: "请求接口不存在"}

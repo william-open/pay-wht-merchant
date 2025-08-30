@@ -9,8 +9,11 @@ require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.2
 	github.com/google/uuid v1.1.2
 	github.com/jinzhu/copier v0.3.5
+	github.com/pkg/errors v0.9.1
+	github.com/pquerna/otp v1.5.0
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/shopspring/decimal v1.4.0
+	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/spf13/viper v1.14.0
 	github.com/ua-parser/uap-go v0.0.0-20211112212520-00c877edfe0f
 	go.uber.org/dig v1.16.1
@@ -20,6 +23,7 @@ require (
 )
 
 require (
+	github.com/boombuler/barcode v1.0.1-0.20190219062509-6c824513bacc // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect

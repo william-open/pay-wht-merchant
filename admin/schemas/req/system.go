@@ -6,8 +6,9 @@ import (
 
 // SystemLoginReq 系统登录参数
 type SystemLoginReq struct {
-	Username string `json:"username" binding:"required,min=2,max=30"` // 账号
-	Password string `json:"password" binding:"required,min=6,max=32"` // 密码
+	Username   string `json:"username" binding:"required,min=2,max=30"` // 账号
+	Password   string `json:"password" binding:"required,min=6,max=32"` // 密码
+	GoogleCode string `json:"googleCode"`                               // 谷歌验证码
 }
 
 // SystemLogoutReq 登录退出参数
@@ -65,6 +66,12 @@ type SystemAuthAdminUpdateReq struct {
 	Avatar       string `form:"avatar"`                                       // 头像
 	Password     string `form:"password" binding:"required"`                  // 密码
 	CurrPassword string `form:"currPassword" binding:"required,min=6,max=32"` // 密码
+}
+
+// SystemAuthAdminUpdateGoogleReq 管理员更新谷歌验证码参数
+type SystemAuthAdminUpdateGoogleReq struct {
+	GoogleSecret    string `form:"googleSecret" binding:"required"`    // 谷歌密钥
+	IsGoogleEnabled int8   `form:"isGoogleEnabled" binding:"required"` // 是否开启谷歌验证码
 }
 
 // SystemAuthAdminDelReq 管理员删除参数

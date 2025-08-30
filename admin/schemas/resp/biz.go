@@ -109,6 +109,18 @@ type BizChannelProductResp struct {
 	Type         string `json:"type" structs:"type"`                 //通道类型
 }
 
+// MerchantWhitelistResponse 商户白名单列表
+type MerchantWhitelistResponse struct {
+	ID         int           `json:"id"`
+	MID        uint64        `json:"mId"`
+	IPAddress  string        `json:"iPAddress"`
+	CanAdmin   uint8         `json:"canAdmin"`
+	CanPayout  uint8         `json:"canPayout"`
+	CanReceive uint8         `json:"canReceive"`
+	CreateTime util.Datetime `json:"createTime"`
+	Remark     string        `json:"remark"`
+}
+
 // BizCollectOrderResp 收款订单返回信息
 type BizCollectOrderResp struct {
 	Id           uint   `json:"id" structs:"id"`                     // 主键
@@ -206,4 +218,22 @@ type OrderPayoutListResponse struct {
 	CreateTime     time.Time `json:"createTime"`     // 创建时间
 	UpdateTime     time.Time `json:"updateTime"`     // 更新时间
 	FinishTime     time.Time `json:"finishTime"`     // 完成时间
+}
+
+// BizGenGoogleCodeResp 谷歌验证码返回信息
+type BizGenGoogleCodeResp struct {
+	Secret string `json:"secret" structs:"secret"` //谷歌密钥
+	Qrcode string `json:"qrcode" structs:"qrcode"` //谷歌密钥二维码
+}
+
+// BizDockingViewKeyResp 对接密钥返回信息
+type BizDockingViewKeyResp struct {
+	ApiKey string `json:"apiKey" structs:"apiKey"` //对接密钥
+}
+
+// BizDockingConfigInfoResp 对接配置信息
+type BizDockingConfigInfoResp struct {
+	AppId      string `json:"appId" structs:"appId"`           //应用ID/商户ID
+	ApiDoc     string `json:"apiDoc" structs:"apiDoc"`         //API对接文档
+	ApiGateway string `json:"apiGateway" structs:"apiGateway"` //API网关
 }

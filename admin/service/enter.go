@@ -36,4 +36,6 @@ var InitFunctions = []interface{}{
 	biz.NewBizCollectionAddressService,
 	biz.NewBizChannelProductService,
 	biz.NewBizOrderService,
+	biz.NewBizDockingService,
+	biz.NewBizSafetyService,
 }

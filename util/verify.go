@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/pquerna/otp/totp"
 	"io/ioutil"
 	"mime/multipart"
 	"mwhtpay/core/response"
+	"time"
 )
 
 var VerifyUtil = verifyUtil{}
@@ -67,4 +69,25 @@ func (vu verifyUtil) VerifyFile(c *gin.Context, name string) (file *multipart.Fi
 		return
 	}
 	return
+}
+
+// ValidateTOTPWithRetry 安全的TOTP验证函数（带重试）
+func (vu verifyUtil) ValidateTOTPWithRetry(code, secret string) (bool, error) {
+	var valid bool
+	var err error
+
+	// 重试机制，防止时间同步问题
+	for i := 0; i < 3; i++ {
+		valid = totp.Validate(code, secret)
+		if valid {
+			return true, nil
+		}
+
+		// 如果不是最后一次尝试，等待一下再重试
+		if i < 2 {
+			time.Sleep(500 * time.Millisecond)
+		}
+	}
+
+	return false, err
 }

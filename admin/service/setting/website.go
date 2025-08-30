@@ -35,13 +35,14 @@ func (wSrv settingWebsiteService) Detail() (res map[string]string, e error) {
 		return
 	}
 	return map[string]string{
-		"name":     data["name"],
-		"logo":     util.UrlUtil.ToAbsoluteUrl(data["logo"]),
-		"favicon":  util.UrlUtil.ToAbsoluteUrl(data["favicon"]),
-		"backdrop": util.UrlUtil.ToAbsoluteUrl(data["backdrop"]),
-		"shopName": data["shopName"],
-		"apiDoc":   data["apiDoc"],
-		"shopLogo": util.UrlUtil.ToAbsoluteUrl(data["shopLogo"]),
+		"name":       data["name"],
+		"logo":       util.UrlUtil.ToAbsoluteUrl(data["logo"]),
+		"favicon":    util.UrlUtil.ToAbsoluteUrl(data["favicon"]),
+		"backdrop":   util.UrlUtil.ToAbsoluteUrl(data["backdrop"]),
+		"shopName":   data["shopName"],
+		"apiDoc":     data["apiDoc"],
+		"apiGateway": data["apiGateway"],
+		"shopLogo":   util.UrlUtil.ToAbsoluteUrl(data["shopLogo"]),
 	}, nil
 }
 
@@ -69,6 +70,10 @@ func (wSrv settingWebsiteService) Save(wsReq req.SettingWebsiteReq) (e error) {
 	}
 	err = util.ConfigUtil.Set(wSrv.db, "website", "apiDoc", wsReq.ApiDoc)
 	if e = response.CheckErr(err, "Save Set apiDoc err"); e != nil {
+		return
+	}
+	err = util.ConfigUtil.Set(wSrv.db, "website", "apiGateway", wsReq.ApiGateway)
+	if e = response.CheckErr(err, "Save Set apiGateway err"); e != nil {
 		return
 	}
 	err = util.ConfigUtil.Set(wSrv.db, "website", "shopLogo", util.UrlUtil.ToRelativeUrl(wsReq.ShopLogo))
